@@ -1,0 +1,33 @@
+server:
+  port: 8086
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8085/eureka/
+hu:
+  webuni:
+    tokenlib:
+      keypaths:
+        public: /Users/Katka/Downloads/public.pem
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: catalog
+          uri: lb://catalog
+          predicates:
+            - Path=/catalog/**
+          filters:
+            - RewritePath=/catalog(?<segment>/?.*), /api$\{segment}
+        - id: order
+          uri: lb://orders
+          predicates:
+            - Path=/orders/**
+          filters:
+            - RewritePath=/orders(?<segment>/?.*), /api$\{segment}
+        - id: user
+          uri: lb://user
+          predicates:
+            - Path=/users/**
+          filters:
+            - RewritePath=/users(?<segment>/?.*), /api$\{segment}

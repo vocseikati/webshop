@@ -1,0 +1,243 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: 'http://localhost:8080'
+    description: Generated server url
+paths:
+  /api/categories:
+    get:
+      summary: Your GET endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryDto'
+      operationId: getCategories
+      tags:
+        - catalogController
+    post:
+      summary: ''
+      operationId: addCategory
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryDto'
+      tags:
+        - catalogController
+    parameters: []
+  /api/categories/products:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - catalogController
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductDto'
+      operationId: getAllProducts
+      description: ''
+    post:
+      summary: ''
+      operationId: createProduct
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDto'
+      tags:
+        - catalogController
+      description: ''
+    parameters: []
+  /api/categories/products/search:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - catalogController
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductDto'
+      operationId: searchProducts
+      description: ''
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: name
+        - schema:
+            type: string
+          in: query
+          name: category.name
+        - schema:
+            type: number
+            format: double
+          in: query
+          name: price
+        - schema:
+            type: integer
+          in: query
+          name: page
+        - schema:
+            type: integer
+          in: query
+          name: size
+        - schema:
+            type: array
+            items:
+              type: string
+          in: query
+          name: sort
+    parameters: []
+  '/api/categories/products/{id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    put:
+      summary: ''
+      operationId: modifyProduct
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+      tags:
+        - catalogController
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDto'
+    delete:
+      summary: ''
+      operationId: deleteProduct
+      responses:
+        '200':
+          description: OK
+      tags:
+        - catalogController
+    post:
+      summary: ''
+      operationId: addCategoryToProduct
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+      tags:
+        - catalogController
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryDto'
+    get:
+      summary: ''
+      operationId: getProductById
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+  '/api/categories/products/{id}/history':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: ''
+      operationId: getProductHistoryById
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistoryDataProductDto'
+      tags:
+        - catalogController
+components:
+  schemas:
+    ProductDto:
+      title: ProductDto
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        category:
+          $ref: '#/components/schemas/CategoryDto'
+    CategoryDto:
+      title: CategoryDto
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDto'
+      required:
+        - name
+    HistoryDataProductDto:
+      title: HistoryDataProductDto
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ProductDto'
+        revisionType:
+          type: string
+        revision:
+          type: integer
+        date:
+          type: string

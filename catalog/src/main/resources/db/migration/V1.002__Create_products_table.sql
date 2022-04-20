@@ -1,0 +1,2 @@
+create table products (id int4 not null, name varchar(255), price float8 not null, category_id int4, primary key (id));
+alter table if exists products add constraint FKog2rp4qthbtt2lfyhfo32lsw9 foreign key (category_id) references categories;
